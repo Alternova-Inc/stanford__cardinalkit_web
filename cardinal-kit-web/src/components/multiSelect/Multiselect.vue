@@ -1,6 +1,6 @@
 <template>
   <div > 
-  <Multiselect v-model="internalValue" :options="options" mode="tags" class="multiselect"
+  <Multiselect :searchable="true" v-model="internalValue" :options="options" mode="tags" class="multiselect"
   > 
     <template v-slot:tag="{ option, handleTagRemove, disabled }">
       <div class="multiselect-tag is-user">

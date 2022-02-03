@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "cardinalkit-testing"
+  },
+  "targets": {
+    "cardinalkit-testing": {
+      "hosting": {
+        "cardinal-documentation": [
+          "hostingDocs"
+        ]
+      }
+    }
   }
 }

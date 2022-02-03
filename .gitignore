@@ -1,3 +1,8 @@
+﻿documentation/docs/node_modules
+cardinal-kit-web/.env
+documentation/docs/src/.vuepress/dist
+firebase/public
+firebase/hostingDocs
 .DS_Store
 node_modules
 /dist

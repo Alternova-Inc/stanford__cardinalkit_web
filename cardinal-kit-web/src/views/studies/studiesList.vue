@@ -4,6 +4,7 @@
       :studies="getUserStudies"
       :handleSelecStudy="handleSelecStudy"
     />
+    <extra-users/>
     <br />
   </div>
 </template>
@@ -14,11 +15,13 @@ import store from "@/store";
 
 //Components
 import studyList from "@/components/studies/studiesList";
+import extraUsers from "@/components/share/extraUsers";
 
 export default {
   name: "Home",
   components: {
     studyList,
+    extraUsers,
   },
   computed: {
     ...mapGetters("user", ["getUserStudies","getUserRol","getUserId"]),
@@ -45,7 +48,10 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    Promise.all([store.dispatch("user/FetchUserRolesAndStudies")]).then(() => {
+    Promise.all([
+      store.dispatch("user/FetchUserRolesAndStudies")],
+      store.dispatch("share/FetchUsersIHaveAccessTo")
+      ).then(() => {
       next();
     });
   },

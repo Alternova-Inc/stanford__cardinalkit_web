@@ -1,6 +1,7 @@
 <template>
   <div>
     <Multiselect  
+      :searchable="true"
       :disabled="disabledSelect"
       trackBy="id"
       label="name"

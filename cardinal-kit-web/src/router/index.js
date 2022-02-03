@@ -15,6 +15,7 @@ import surveysBuilder from "@/views/surveys/surveysBuilder"
 import editSurveyBuilder from "@/components/surveys/SurveyBuilder/editSurveyBuilder.vue"
 import categories from '@/components/patients/healthKit/categoryList'
 import healthKitGraphs from '@/views/patients/healthKit/healthKitGraphs'
+import shareHome from '@/views/share/shareHome'
 
 
 const routes = [
@@ -144,8 +145,16 @@ const routes = [
         props:true,
         meta: {
           requiresAuth: true,
-        },
-        
+        },        
+      },
+      {
+        path: "/share/:studyId",
+        name: "share",
+        component: shareHome,
+        props:true,
+        meta: {
+          requiresAuth: true,
+        },        
       },
     ]
   },

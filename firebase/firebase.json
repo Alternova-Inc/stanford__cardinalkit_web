@@ -5,18 +5,22 @@
     ],
     "source": "functions"
   },
-  "hosting": {
-    "public": "Hosting",
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ],
+  "hosting": [
+    {
+      "site": "cardinal-documentation",
+      "public": "hostingDocs",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ]
+    },
+    {
+    "public": "public",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
     ]
-  }
+  }]
 }

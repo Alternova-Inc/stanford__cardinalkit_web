@@ -63,6 +63,16 @@ export default {
           ];
         }
       }
+      else{
+        console.log("else",)
+         if (this.$route.params.studyId){
+           main.push({ name: "Share User Info", route: `/share/${this.$route.params.studyId}` });
+         }
+         else if (this.$route.query.studyId){
+           main.push({ name: "Share User Info", route: `/share/${this.$route.query.studyId}` });
+         }
+        
+      }
       return main;
     }
   },
