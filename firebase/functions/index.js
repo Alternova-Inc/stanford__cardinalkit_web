@@ -1,3 +1,8 @@
+// Import other Functions
+const jacksonFunctions = require('./jacksonFunctions');
+exports.schedule = jacksonFunctions.schedule;
+
+
 const _ = require("lodash");
 
 const functions = require("firebase-functions");
