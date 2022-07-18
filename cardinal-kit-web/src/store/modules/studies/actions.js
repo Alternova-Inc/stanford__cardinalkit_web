@@ -43,3 +43,24 @@ export const FetchUsers = async ({commit},payload)=>{
   commit("SaveUsers", {idStudy:payload.studyId,users:allUsers})
 }
 
+export const FecthUserMonthUsage = async ({commit}, payload) => {
+  let monthUsages = {}
+  const usersSnap = await request.GET(`studies/${payload.studyId}/users`).Execute();
+
+  await Promise.all(usersSnap.docs.map( async (user) => {
+    let userDocs = await request.GET(`studies/${payload.studyId}/users/${user.id}/senseReliefWatchData`).Execute();
+    if (userDocs.docs.length > 0) {
+      let localUserUsage = {}
+      userDocs.docs.forEach( (usage) => {
+        const date = new Date(usage.id);
+        if (date.getFullYear()>0){
+          localUserUsage[`${date.getFullYear()}-${date.getMonth()}`] = true
+        }
+      })
+      for (var key in localUserUsage){
+        monthUsages[key] = monthUsages[key] != null ? monthUsages[key]+1: 1 
+      }
+    }
+  }))
+  commit("saveUsersMonthUsage", monthUsages)
+}

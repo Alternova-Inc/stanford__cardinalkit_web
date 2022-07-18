@@ -18,3 +18,7 @@ export function saveRecords(state,records){
 export function SaveUsers(state,{idStudy,users}){
     state.users[idStudy]=users
 }
+
+export function saveUsersMonthUsage(state,monthUsage){
+    state.monthUserUsage=monthUsage
+}

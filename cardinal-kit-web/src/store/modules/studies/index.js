@@ -4,7 +4,8 @@ import * as getters from './getters'
 
 export const initialState = () => ({
     studies:[],
-    users:[]
+    users:[],
+    monthUserUsage:{}
 })
 
 export default {

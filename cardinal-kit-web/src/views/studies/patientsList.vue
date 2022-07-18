@@ -1,6 +1,7 @@
 <template>
   <div>
       <patient-list :patients="getUsersStudy(studyId)" :studyId="studyId" />
+      <monthUsage />
       <br />
   </div>
 </template>
@@ -9,11 +10,13 @@
 import { mapGetters } from "vuex";
 import store from "@/store";
 import patientList from "@/components/studies/patientsList";
+import monthUsage from "@/components/studies/studieUsage"
 
 export default {
   name: "Home",
   components: {
     patientList,
+    monthUsage
   },
   computed: {
     ...mapGetters("studies", ["getUsersStudy"]),
@@ -27,6 +30,7 @@ export default {
   beforeRouteEnter(to, from, next) {
     store.dispatch("studies/FetchUsers", { studyId: to.params.studyId })
     .then(() => {
+      store.dispatch("studies/FecthUserMonthUsage", { studyId: to.params.studyId })
       next();
     });
   },

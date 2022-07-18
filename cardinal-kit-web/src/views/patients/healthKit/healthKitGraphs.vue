@@ -18,6 +18,7 @@
             :key="1"
             :series="getSpecificHealthDataGrapFormat(hkCode)"
           />
+          {{getSpecificHealthDataGrapFormat(hkCode)}}
           <scatter-chart
             v-if="GetGraphType == 'scatter'"
             ref="chart"

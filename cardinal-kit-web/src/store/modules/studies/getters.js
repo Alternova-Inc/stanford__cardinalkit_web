@@ -11,3 +11,7 @@ export function getUsersStudy(state){
       return state.users[idStudy]
   }
 }
+
+export function getMonthUsage(state){
+  return state.monthUserUsage
+}
