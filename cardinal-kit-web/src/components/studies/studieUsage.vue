@@ -2,7 +2,7 @@
       <section class="statistic">
         
         <div class="wrapper-graphs">
-          <h1 class="mb-5 text-muted">Month Sense Relief Users Active</h1>
+          <h1 class="mb-5 text-muted">Monthly Active Users</h1>
           <line-chart
             ref="chart"
             :key="1"
