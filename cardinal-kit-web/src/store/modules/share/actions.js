@@ -1,12 +1,12 @@
 import request from "@/Rest"
-import { objectToString } from "@vue/shared";
+import { usersRolesPaths, usersPaths } from "@/common/static_data/api_routes"
+import { auth } from "@/plugins/firebase/firebase"
 
 export const FetchUserHaveMyData = async ({ commit }) => {
-    let { auth } = require("@/plugins/firebase/firebase");
     auth.onAuthStateChanged(async function (user){
         console.log(user.uid)
         let users = []
-        const usersSnap = await request.GET("users_roles").WHERE(["users_access", "array-contains", user.uid]).Execute()
+        const usersSnap = await request.GET(usersRolesPaths.list()).WHERE(["users_access", "array-contains", user.uid]).Execute()
         usersSnap.forEach(user => {
             users.push({
                 id: user.id,
@@ -22,10 +22,9 @@ export const FetchUserHaveMyData = async ({ commit }) => {
 // .collection("users_roles")
 // .where("users_access", "array-contains", "eetPw3yVxig1Mkcp7ltGUHSXOHa2")
 export const FetchUsersIHaveAccessTo = async ({commit}) =>{
-    let { auth } = require("@/plugins/firebase/firebase");
     auth.onAuthStateChanged(async function (user){
         let users = []
-        const usersSnap = await request.GET(`users_roles/${user.uid}`).Execute()
+        const usersSnap = await request.GET(usersRolesPaths.get(user.uid)).Execute()
         if(usersSnap.data()["user_data"]){
             for(const [key,value] of Object.entries(usersSnap.data()["user_data"])){
                 users.push({
@@ -40,9 +39,8 @@ export const FetchUsersIHaveAccessTo = async ({commit}) =>{
 }
 
 export const FetchAllDoctorsAndSuperAdmin = async ({commit})=>{
-    let { auth } = require("@/plugins/firebase/firebase");
     let users = []
-    const usersSnap = await request.GET("users_roles").WHERE(["rol", "in",['doctor','superAdmin']]).Execute()
+    const usersSnap = await request.GET(usersRolesPaths.list()).WHERE(["rol", "in",['doctor','superAdmin']]).Execute()
     await auth.onAuthStateChanged(async function (user){
         usersSnap.forEach(admin => {
             let push=true
@@ -66,10 +64,9 @@ export const FetchAllDoctorsAndSuperAdmin = async ({commit})=>{
 
 export const ShareMyData = async ({commit},{userId,studyId})=>{
     return new Promise((resolve,reject)=>{
-        let { auth } = require("@/plugins/firebase/firebase");
         auth.onAuthStateChanged(async function (user){
-            const usersSnap = await request.GET(`users_roles/${userId}`).Execute()
-            const userDataSnap = await request.GET(`studies/${studyId}/users/${user.uid}`).Execute()
+            const usersSnap = await request.GET(usersRolesPaths.get(userId)).Execute()
+            const userDataSnap = await request.GET(usersPaths.get(studyId,user.uid)).Execute()
             console.log(userDataSnap.data())
             let email = userDataSnap.data()['email']
             let previousUserAccess = []
@@ -89,7 +86,7 @@ export const ShareMyData = async ({commit},{userId,studyId})=>{
                'studyId':studyId
            }
            console.log('data',previousUserData)
-            await request.PUT(`/users_roles/${userId}/`,{
+            await request.PUT(usersRolesPaths.get(userId),{
                 data:{
                     'users_access':previousUserAccess,
                     'user_data':previousUserData
@@ -103,10 +100,9 @@ export const ShareMyData = async ({commit},{userId,studyId})=>{
 
 export const RemoveAccess = async({commit}, userId)=>{
     return new Promise((resolve,reject)=>{
-        let { auth } = require("@/plugins/firebase/firebase");
         auth.onAuthStateChanged(async function (user){
             let previousUserAccess = []
-            const usersSnap = await request.GET(`users_roles/${userId}`).Execute()
+            const usersSnap = await request.GET(usersRolesPaths.get(userId)).Execute()
             let data= usersSnap.data()
             if (data && data['users_access']){
                 previousUserAccess = [...data['users_access']]
@@ -122,7 +118,7 @@ export const RemoveAccess = async({commit}, userId)=>{
                 }
                 
             }
-            await request.PUT(`/users_roles/${userId}/`,{
+            await request.PUT(usersRolesPaths.get(userId),{
                 data:{
                     'users_access':filteredAccess,
                     'user_data':userData

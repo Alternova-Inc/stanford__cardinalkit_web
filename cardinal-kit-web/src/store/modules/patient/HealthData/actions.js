@@ -1,6 +1,6 @@
 import request from "@/Rest";
 import { transformHealthDataToGlobalFormat } from "@/common/helpers/healthKit";
-import { timeTransform } from "@/plugins/firebase/firebase";
+import { metricsPaths } from "@/common/static_data/api_routes"
 
 export const FetchSpecificTypeData = async ({ commit }, payload) => {
   let startDate = new Date();
@@ -117,10 +117,9 @@ export const FecthCategoryWithData = async ({ dispatch, commit }, payload) => {
 
 export const FetchMetricsData = async ({ commit }, { studyId, userId }) => {
   let result = [];
-  let metricSnap = await request.GET(`studies/${studyId}/users/${userId}/metrics`).Execute();
+  let metricSnap = await request.GET(metricsPaths.list(studyId,userId)).Execute();
  /*  console.log(metricSnap.docs) */
   for (const [key, element] of Object.entries(metricSnap.docs)) {
-    // let metricData = await request.GET(`studies/${studyId}/users/${userId}/metrics/${element.id}`).Execute();
     result.push(element.data());
   }
   commit("saveMetricData", result);
