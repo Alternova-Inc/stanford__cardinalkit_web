@@ -71,7 +71,6 @@ export default {
     },
     checkQuestion(){
       let error = false
-      console.log(this.Survey.defaultIndex )
       this.errors={}
       let msg = ""
       if(this.Survey.defaultIndex == ""){

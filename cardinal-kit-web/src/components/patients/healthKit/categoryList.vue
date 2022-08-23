@@ -95,7 +95,6 @@ export default {
   },
   created(){
     this.categories = CategoriesList
-    console.log("on",this.getActivityIndexDataToGraphic)
     this.filteredIndexData = [...this.getActivityIndexDataToGraphic]
   }
 };

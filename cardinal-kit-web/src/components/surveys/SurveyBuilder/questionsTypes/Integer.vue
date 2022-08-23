@@ -69,7 +69,6 @@ export default {
         this.errors['max']=this.Options.max==""
         this.errors['maxFraction']=this.Options.maxFractionDigits==""
         this.errors['unit']=this.Options.unit==""
-        console.log("errors",this.Options)
 
       }
       else{

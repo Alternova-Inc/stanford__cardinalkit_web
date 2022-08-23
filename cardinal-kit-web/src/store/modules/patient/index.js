@@ -101,9 +101,7 @@ export default {
   state: initialState(),
   mutations:
   {
-    ...require("./HealthData/mutations"),
-    ...require("./HealthData/Activity/mutations"),
-    ...require("./HealthData/Hearing/mutations"),
+    ...require("./HealthData/mutations")
   },
   actions: {
     ...require("./HealthData/actions"),
@@ -123,7 +121,5 @@ export default {
   getters:{
     ...require("./HealthData/getters"),
     ...require("./HealthData/Activity/getters"),
-    ...require("./HealthData/Hearing/getters"),
-    
   }
 };

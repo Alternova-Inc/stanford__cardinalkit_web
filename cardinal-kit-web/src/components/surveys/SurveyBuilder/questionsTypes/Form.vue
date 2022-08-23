@@ -333,7 +333,6 @@ export default {
       this.errors = {}
       let isValid = true
       let msg = ""
-      console.log("value",this.Survey.question)
       for(const [key,value] of Object.entries(this.Survey.question)){
         if(value.question == "" || value.identifier == ""){
           isValid = false
@@ -341,11 +340,7 @@ export default {
           this.errors[value.id+'question']= value.question==""
           this.errors[value.id+'identifier']=value.identifier==""
         }
-        console.log("value",value)
         if(!this.$refs[value.id]  || !this.$refs[value.id].checkQuestion()){
-
-          
-
 
           isValid=false
           msg = "The fields can't be blank"
@@ -355,8 +350,6 @@ export default {
         isValid=false
         msg = "Please select at least one question "
       }
-      console.log(isValid,msg)
-      console.log(this.Survey.question)
       return {"error":!isValid,"msg":msg};
     }
   },
