@@ -1,14 +1,15 @@
 import request from "@/Rest";
+import { schedulePaths, usersPaths, surveysPaths, surveysUserPaths } from "@/common/static_data/api_routes"
 
 // fetch (data and questions) all surveys in a study
 export const FetchAllSurveysData = async ({ commit }, {studyId}) => {
   let response = {};
-  let surveysSnap = await request.GET(`studies/${studyId}/surveys`).Execute();
+  let surveysSnap = await request.GET(surveysPaths.list(studyId)).Execute();
   await Promise.all(
     surveysSnap.docs.map(async (survey) => {      
       if (!survey.data().deleted) {
         let surveyQuestionsSnap = 
-        await request.GET(`studies/${studyId}/surveys/${survey.id}/questions`).Execute();
+        await request.GET(surveysPaths.questionsList(studyId,survey.id)).Execute();
         let questions = {};
         surveyQuestionsSnap.forEach((question) => {
           if(!question.data().deleted)
@@ -33,11 +34,11 @@ export const FetchSurveyDataAnswers = async (
   { studyId, surveyId }
 ) => {
   let QuestionsResults = [];
-  let users = await request.GET(`studies/${studyId}/users`).Execute();
+  let users = await request.GET(usersPaths.list(studyId)).Execute();
   await Promise.all(
     users.docs.map(async (user) => {
       let surveyData = await request
-        .GET(`studies/${studyId}/users/${user.id}/surveys/${surveyId}`)
+        .GET(surveysUserPaths.list(studyId,user.id,surveyId))
         .Execute();
       if (surveyData.exists) {
         let dataResuls = surveyData.data().results;
@@ -56,8 +57,8 @@ export const FetchSurveyDataAnswers = async (
 // Get Data,Questions of specific Survey
 export const FetchSurveyData = async ({ commit }, { studyId, surveyId }) => {
   let questions = {};
-  let surveyData = await request.GET(`studies/${studyId}/surveys/${surveyId}`).Execute();
-  let questionsSnap = await request.GET(`studies/${studyId}/surveys/${surveyId}/questions`).Execute();
+  let surveyData = await request.GET(surveysPaths.get(studyId,surveyId)).Execute();
+  let questionsSnap = await request.GET(surveysPaths.questionsList(studyId,surveyId)).Execute();
   questionsSnap.forEach((question) => {
     questions[question.id] = question.data();
   });
@@ -74,7 +75,7 @@ export const FetchUserSurveyData = async ({ commit }, { studyId, userId }) => {
   let questionsExclude = ["summary","signature"]
   let response = {};
   //Get user answers
-  let userSurveysSnap = await request.GET(`studies/${studyId}/users/${userId}/surveys`).Execute();
+  let userSurveysSnap = await request.GET(surveysUserPaths.list(studyId,userId)).Execute();
   // get questions data
   await Promise.all(
     userSurveysSnap.docs.map(async (survey) => {
@@ -85,11 +86,11 @@ export const FetchUserSurveyData = async ({ commit }, { studyId, userId }) => {
           id = survey.data().results[0].identifier
         }
       }
-      let surveyData = await request.GET(`studies/${studyId}/surveys/${id}`).Execute()
+      let surveyData = await request.GET(surveysPaths.get(studyId,id)).Execute()
       
 
       if(surveyData.data()){
-        let surveyQuestions = await request.GET(`studies/${studyId}/surveys/${id}/questions`).Execute()
+        let surveyQuestions = await request.GET(surveysPaths.questionsList(studyId,id)).Execute()
         let questions = []
         surveyQuestions.docs.map((question)=>{
        //   console.log(question.data().type)
@@ -117,14 +118,14 @@ export const FetchUserSurveyData = async ({ commit }, { studyId, userId }) => {
 
 export const AddSurvey = async ({ commit }, { studyId, id, questions, data }) => {
   await request
-    .POST(`/studies/${studyId}/surveys/${id}/`, {
+    .POST(surveysPaths.get(studyId,id), {
       data: data,
     })
     .Execute();
   Object.keys(questions).forEach(async (key) => {
     let element = questions[key];
     await request
-      .POST(`/studies/${studyId}/surveys/${id}/questions/${element.id}/`, {
+      .POST(surveysPaths.questionGet(studyId,id,element.id), {
         data: element,
       })
       .Execute();
@@ -134,13 +135,13 @@ export const AddSurvey = async ({ commit }, { studyId, id, questions, data }) =>
 export const DeleteSurveyQuestion = async ({ commit }, data) => {
   let studyId = data.studyId;
   await request
-    .DELETE(`/studies/${studyId}/surveys/${data.name}/questions/${data.id}/`)
+    .DELETE(surveysPaths.questionGet(studyId,data.name,data.id))
     .Execute();
 };
 //Delete Survey
 
 export const DeleteSurvey = async ({ commit }, {studyId,surveyId}) => {
-  await request.PUT(`/studies/${studyId}/surveys/${surveyId}/`,{
+  await request.PUT(surveysPaths.get(studyId,surveyId),{
     data:{
       deleted:true
     }
@@ -151,7 +152,7 @@ export const DeleteSurvey = async ({ commit }, {studyId,surveyId}) => {
 
 export const FetchStudyScheduler = async ({ commit }, { studyId }) => {
   let tasks = await request
-    .GET(`/studies/${studyId}/carekit-store/v2/tasks/`)
+    .GET(schedulePaths.list(studyId))
     .Execute();
   let taskDictionary = {};
   tasks.forEach((task) => {
@@ -162,7 +163,7 @@ export const FetchStudyScheduler = async ({ commit }, { studyId }) => {
 
 export const FetchUserScheduler = async ({ commit }, { studyId, userId }) => {
   let tasks = await request
-    .GET(`/studies/${studyId}/users/${userId}/carekit-store/v2/tasks/`)
+    .GET(schedulePaths.listUser(studyId,userId))
     .Execute();
   let taskDictionary = {};
   tasks.forEach((task) => {
@@ -179,7 +180,7 @@ export const CreateStudySchedule = async ({ commit }, { studyId, payload }) => {
   let surveysTaskId = null;
   let scheduleElements = [];
   let tasks = await request
-    .GET(`/studies/${studyId}/carekit-store/v2/tasks/`)
+    .GET(schedulePaths.list(studyId))
     .Execute();
   tasks.forEach((task) => {
     if (task.data().id && task.data().id == "surveys") {
@@ -193,7 +194,7 @@ export const CreateStudySchedule = async ({ commit }, { studyId, payload }) => {
   scheduleElements.push(payload);
   if (surveysTaskId == null) {
     await request
-      .POST(`/studies/${studyId}/carekit-store/v2/tasks/`, {
+      .POST(schedulePaths.list(studyId), {
         data: {
           scheduleElements: scheduleElements,
           id: "surveys",
@@ -207,7 +208,7 @@ export const CreateStudySchedule = async ({ commit }, { studyId, payload }) => {
       .Execute();
   } else {
     await request
-      .PUT(`/studies/${studyId}/carekit-store/v2/tasks/${surveysTaskId}/`, {
+      .PUT(schedulePaths.get(studyId,surveysTaskId), {
         data: {
           scheduleElements: scheduleElements,
           updateTime: new Date(),
@@ -224,7 +225,7 @@ export const CreateUserSchedule = async (
   let surveysTaskId = null;
   let scheduleElements = [];
   let tasks = await request
-    .GET(`/studies/${studyId}/users/${userId}/carekit-store/v2/tasks/`)
+    .GET(schedulePaths.listUser(studyId,userId))
     .Execute();
   tasks.forEach((task) => {
     if (task.data().id && task.data().id == "surveys") {
@@ -238,7 +239,7 @@ export const CreateUserSchedule = async (
   scheduleElements.push(payload);
   if (surveysTaskId == null) {
     await request
-      .POST(`/studies/${studyId}/users/${userId}/carekit-store/v2/tasks/`, {
+      .POST(schedulePaths.listUser(studyId,userId), {
         data: {
           scheduleElements: scheduleElements,
           id: "surveys",
@@ -253,7 +254,7 @@ export const CreateUserSchedule = async (
   } else {
     await request
       .PUT(
-        `/studies/${studyId}/users/${userId}/carekit-store/v2/tasks/${surveysTaskId}/`,
+        schedulePaths.getUser(studyId,userId,surveysTaskId),
         {
           data: {
             scheduleElements: scheduleElements,
@@ -264,187 +265,3 @@ export const CreateUserSchedule = async (
       .Execute();
   }
 };
-// export const SaveQuestion = async ({ commit }, data) => {
-//   let studyId = data.studyId;
-//   Object.keys(data.questions).forEach(async (key) => {
-//     let element = data.questions[key];
-//     await request
-//       .POST(`/studies/${studyId}/surveys/${data.id}/questions/${element.id}/`, {
-//         data: element,
-//       })
-//       .Execute();
-//   });
-// };
-
-// //All Surveys
-
-// export const FetchSurveyQuestions = async ({ commit }, { studyId }) => {
-//   console.log("call fetch questions")
-//   //let surveyquestions={}
-//   let questions = [];
-//   let allQuestions = [];
-//   let surveysSnap = await request.GET(`studies/${studyId}/surveys`).Execute();
-//   await Promise.all(
-//     surveysSnap.docs.map(async (survey) => {
-//       let surveyData = await request
-//         .GET(`studies/${studyId}/surveys/${survey.id}/questions`)
-//         .Execute();
-//       if (surveyData.docs.length) {
-//         surveyData.docs.map((o) => {
-//           allQuestions.push(o.data());
-//           questions.push(o.data());
-//         });
-//         // surveyquestions[survey.id]=questions
-//         questions = [];
-//       }
-//     })
-//   );
-
-//   console.log(allQuestions)
-//   //  commit("saveQuestionBySurveyId",{results:surveyquestions})
-//   commit("saveAllQuestions", { results: allQuestions });
-// };
-
-// // fetch all surveys of study
-// export const FetchSurveyByStudy = async ({ commit }, { studyId }) => {
-//   let surveysListData = {};
-//   let surveysSnap = await request.GET(`studies/${studyId}/surveys`).Execute();
-//   await Promise.all(
-//     surveysSnap.docs.map(async (survey) => {
-//       let invalidQuestionTypes = ["summary", "instruction"];
-//       if (!survey.data().deleted) {
-//         let surveyQuestionsSnap = await request
-//           .GET(`studies/${studyId}/surveys/${survey.id}/questions`)
-//           .Execute();
-//         let questions = {};
-//         surveyQuestionsSnap.forEach((question) => {
-//           if (!invalidQuestionTypes.includes(question.data().type)) {
-//             questions[question.id] = question.data();
-//           }
-//         });
-//         surveysListData[survey.id] = {
-//           data: survey.data(),
-//           questions: questions,
-//         };
-//       }
-//     })
-//   );
-//   commit("saveSurveysListData", {
-//     idStudy: studyId,
-//     surveys: JSON.parse(JSON.stringify(surveysListData)),
-//   });
-// };
-
-// //Get Data specific Survey
-// export const FetchSurveyAllData = async ({ commit }, { studyId, surveyId }) => {
-//   console.log("call survey Detail")
-//   let QuestionsResults = [];
-//   let users = await request.GET(`studies/${studyId}/users`).Execute();
-//   await Promise.all(
-//     users.docs.map(async (user) => {
-//       let surveyData = await request
-//         .GET(`studies/${studyId}/users/${user.id}/surveys/${surveyId}`)
-//         .Execute();
-//       if (surveyData.exists) {
-//         let dataResuls = surveyData.data().results;
-//         dataResuls["userId"] = user.id;
-//         QuestionsResults.push(dataResuls);
-//       }
-//     })
-//   );
-//   commit("saveSurveyDetail", {
-//     results: QuestionsResults,
-//     surveyId: surveyId,
-//     studyId: studyId,
-//   });
-// };
-
-// // Fetch survey Data specific user
-// export const FetchSurveyDataByUser = async (
-//   { commit },
-//   { studyId, userId }
-// ) => {
-//   console.log("call survey by user")
-//   let surveyResults = {};
-//   let surveysSnap = await request.GET(`studies/${studyId}/surveys`).Execute();
-//   await Promise.all(
-//     surveysSnap.docs.map(async (survey) => {
-//       let surveyData = await request
-//         .GET(
-//           `studies/${studyId}/users/${userId}/surveys/${survey.data().title}`
-//         )
-//         .Execute();
-//       if (surveyData.exists) {
-//         surveyResults[survey.id] = surveyData.data().results;
-//       }
-//     })
-//   );
-//   commit("saveUserSurveys", { results: surveyResults, userId: userId });
-// };
-
-// // fetch data from specific survey
-// export const FetchSurveyData = async ({ commit }, { studyId, surveyId }) => {
-//   let questions = [];
-//   let questionsbyId = {};
-//   let surveyData = await request
-//     .GET(`studies/${studyId}/surveys/${surveyId}/questions`)
-//     .Execute();
-//   if (surveyData.docs.length) {
-//     surveyData.docs.map((o) => {
-//       questions.push(o.data());
-//     });
-//     questionsbyId[surveyId] = questions;
-//   }
-//   commit("saveSurveysUserQuestions", { results: questionsbyId });
-// };
-
-// // Create Update Survey
-
-// export const SaveSurvey = async ({ commit }, data) => {
-//   let studyId = data.studyId;
-//   await request
-//     .POST(`/studies/${studyId}/surveys/${data.id}/`, {
-//       data: data.data,
-//     })
-//     .Execute();
-//   Object.keys(data.questions).forEach(async (key) => {
-//     let element = data.questions[key];
-//     await request
-//       .POST(`/studies/${studyId}/surveys/${data.id}/questions/${element.id}/`, {
-//         data: element,
-//       })
-//       .Execute();
-//   });
-// };
-
-
-// export const UpdateSurveyData = async ({ commit }, data) => {
-//   let studyId = data.studyId;
-//   await request
-//     .PUT(`/studies/${studyId}/surveys/${data.id}/`, {
-//       data: data.data,
-//     })
-//     .Execute();
-//   if (data.questions) {
-//     Object.keys(data.questions).forEach(async (key) => {
-//       let element = data.questions[key];
-//       await request
-//         .PUT(
-//           `/studies/${studyId}/surveys/${data.id}/questions/${element.id}/`,
-//           {
-//             data: element,
-//           }
-//         )
-//         .Execute();
-//     });
-//   }
-// };
-
-
-
-
-// export const DeleteSurvey = async ({ commit }, data) => {
-//   let studyId = data.studyId;
-//   await request.DELETE(`/studies/${studyId}/surveys/${data.name}/`).Execute();
-// };
-
