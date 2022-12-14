@@ -1,4 +1,5 @@
 import request from "@/Rest";
+import { studiesPaths, usersPaths, healthFHIRPaths } from "@/common/static_data/api_routes"
 
 export function reset({ commit }) {
   commit("RESET");
@@ -6,7 +7,7 @@ export function reset({ commit }) {
 
 export const FetchAllStudies = async ({ commit }) => {
   let studies = [];
-  const studiesSnap = await request.GET("studies").Execute();
+  const studiesSnap = await request.GET(studiesPaths.list()).Execute();
   studiesSnap.forEach((study) => {
     studies.push({
       id: study.id,
@@ -20,10 +21,10 @@ export const FetchAllStudies = async ({ commit }) => {
 
 export const FetchStudyHealthData = async ({ commit }, payload) => {
   let allRecords = [];
-  const dataSnap = await request.GET(`studies/${payload.studyId}/users`).Execute();
+  const dataSnap = await request.GET(usersPaths.list(payload.studyId)).Execute();
   allRecords = await Promise.all(dataSnap.docs.map(async (user) => {
     const userSnap = await request.GET(
-      `studies/${payload.studyId}/users/${user.id}/healthFhir`
+      healthFHIRPaths.list(payload.studyId,user.id)
     );
     const records = userSnap.docs.map((record) => {
       return record.data()
@@ -36,7 +37,7 @@ export const FetchStudyHealthData = async ({ commit }, payload) => {
 
 export const FetchUsers = async ({commit},payload)=>{
   let allUsers = [];
-  const usersSnap = await request.GET(`studies/${payload.studyId}/users`).Execute();
+  const usersSnap = await request.GET(usersPaths.list(payload.studyId)).Execute();
   allUsers = usersSnap.docs.map((record) => {
     return {id:record.id,...record.data()}
   })

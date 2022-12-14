@@ -48,7 +48,6 @@ export default {
    
   },
   beforeRouteEnter(to, from, next) {
-    console.log("enter")
     Promise.all([
       store.dispatch("patient/FecthCategoryWithData", {
         studyId: `${to.query.studyId}`,
@@ -68,9 +67,7 @@ export default {
         ]
        }
        if(path!=null){
-        console.log("path",path)
           path.forEach(obj => {
-            console.log(to.name,"name")
           obj.active = obj.name === to.name;
           if (obj.param && to.params && obj.active){  
             obj.params = to.params
@@ -78,14 +75,12 @@ export default {
           }
           return obj
         });
-        console.log("finalpath",path)
         localStorage.setItem("path", JSON.stringify(path))
       }
       next();
     });
   },
   beforeRouteUpdate(to, from, next) {
-    console.log("updated")
     this.path.forEach(obj => {
       obj.active = obj.name === to.name;
       if (obj.param && to.params && obj.active){  

@@ -4,17 +4,6 @@ export function reset({ commit }) {
   commit("RESET");
 }
 
-export const FetchActivityData = async ({commit}, payload)=>{
-  commit("saveActivityData",await 
-    Promise.all([
-      FetchQuantityData("HKQuantityTypeIdentifierDistanceWalkingRunning",payload),
-      FetchQuantityData("HKQuantityTypeIdentifierActiveEnergyBurned",payload),
-      FetchQuantityData("HKQuantityTypeIdentifierAppleStandTime",payload),      
-      FetchQuantityData("HKCategoryTypeIdentifierAppleStandHour",payload),
-    ])
-  )
-}
-
 export const FetchLastActivityData = async ({commit}, payload)=>{
   let data = 
   await Promise.all([

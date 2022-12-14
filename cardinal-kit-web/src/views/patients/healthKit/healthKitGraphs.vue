@@ -180,7 +180,6 @@ export default {
     GetCategoriesByHkType,
     handleChangeDate(value) {
       if(this.firstDateChange){
-        console.log("first change")
         let allData = this.getSpecificHealthDataGrapFormat(this.hkCode)
         if (allData.length>0){
           let data = allData[0].data
@@ -209,10 +208,7 @@ export default {
               this.$refs.chart.zoomX(value.startDate, value.endDate);
             }
           }
-        // }
       }
-      
-      console.log("changed . ",value.startDate, value.endDate)
     },
     transformDate(date) {
       return date.toLocaleString("en-US", { timeZone: "UTC" });
@@ -227,15 +223,6 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    // Promise.all([
-    //   store.dispatch("patient/FetchSpecificTypeData", {
-    //     studyId: `${to.query.studyId}`,
-    //     userId: `${to.query.userId}`,
-    //     dataType: `${to.params.hkCode}`,
-    //   }),
-    // ]).then(() => {
-    //   next();
-    // });
     next()
   }
 };

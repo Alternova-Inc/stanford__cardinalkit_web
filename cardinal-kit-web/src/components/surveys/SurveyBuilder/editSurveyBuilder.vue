@@ -109,7 +109,6 @@ export default {
       }).then(() => {
         delete this.questionData[index]
         delete this.newQuestionsData[index]
-        console.log("deleted")
       })
     },
     saveSurvey(data){
@@ -141,7 +140,6 @@ export default {
       // review if question has data
       let isValid = true
       for(const[key,value] of Object.entries(questions)){
-        console.log("tryReview")
         if(!this.$refs[value.id].reviewQuestionData()){
           isValid = false
         }

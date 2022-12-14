@@ -24,9 +24,7 @@ export function saveHealthData(state, payload) {
       } else if (record[key].component) {
         keyCode = record[key].component[0].valueCodeableConcept.text;
         name = keyCode;
-      } else {
-        console.log("record sin category ", record[key]);
-      }
+      } 
 
       if (!(keyCode in healthData)) {
         healthData[keyCode] = {
@@ -40,14 +38,6 @@ export function saveHealthData(state, payload) {
   });
   state.healthData = healthData;
 }
-
-
-///TODO REVIEW THIS METHOD
-export function saveActivityData(state, payload) {
-  console.log("CALL OTHER???", payload);
-}
-
-
 
 export function saveLastActivityData(state, payload) {
   let activityData = {};

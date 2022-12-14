@@ -1,4 +1,5 @@
 import request from "@/Rest";
+import { healthKitPaths } from "@/common/static_data/api_routes"
 
 export const FetchCategoryTypeData = async (  
   categoryType,
@@ -54,7 +55,7 @@ export const FetchQuantityData = async(
 
 export const FetchActivities = async(payload)=>{
   let snapShot =  await request
-    .GET(`studies/${payload.studyId}/users/${payload.userId}/healthKit`)
+    .GET(healthKitPaths.list(payload.studyId,payload.userId))
     .WHERE(["body.activity_name","!=",null])
     .ORDER_BY("body.activity_name")
     .ORDER_BY('header.creation_date_time',true)
@@ -74,7 +75,7 @@ export const FetchActivities = async(payload)=>{
 }
 
 const FetchGeneralData = async (payload) => { 
-  let Ref = request.GET(`studies/${payload.studyId}/users/${payload.userId}/healthKit`)
+  let Ref = request.GET(healthKitPaths.list(payload.studyId,payload.userId))
   payload.filterParams.forEach(element => {    
     Ref=Ref.WHERE(element)
   });
@@ -100,9 +101,7 @@ export default {
   state: initialState(),
   mutations:
   {
-    ...require("./HealthData/mutations"),
-    ...require("./HealthData/Activity/mutations"),
-    ...require("./HealthData/Hearing/mutations"),
+    ...require("./HealthData/mutations")
   },
   actions: {
     ...require("./HealthData/actions"),
@@ -122,7 +121,5 @@ export default {
   getters:{
     ...require("./HealthData/getters"),
     ...require("./HealthData/Activity/getters"),
-    ...require("./HealthData/Hearing/getters"),
-    
   }
 };

@@ -64,7 +64,6 @@ export default {
         }
       }
       else{
-        console.log("else",)
          if (this.$route.params.studyId){
            main.push({ name: "Share User Info", route: `/share/${this.$route.params.studyId}` });
          }
@@ -80,7 +79,6 @@ export default {
     ...mapActions("auth", ["Logout"]),
     handleLogout() {
       this.Logout().then(() => {
-        console.log("Called Logout");
         this.$router.push("Login");
       });
     },

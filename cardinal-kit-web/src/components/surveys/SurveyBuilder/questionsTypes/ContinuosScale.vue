@@ -153,9 +153,6 @@ export default {
           this.errors['min'] = true
         }      
       }
-      
-console.log("this.errors",this.errors)
-          console.log(msg)
       return {"error":error,"msg":msg};
     }
   }

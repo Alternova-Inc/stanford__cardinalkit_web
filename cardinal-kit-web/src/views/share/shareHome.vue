@@ -115,9 +115,7 @@ export default {
   methods:{
     ...mapActions("share",["ShareMyData","RemoveAccess"]),
     share(){
-      console.log(this.$route.params.studyId)
       this.ShareMyData({userId:this.doctorSelected,studyId:this.$route.params.studyId}).then(()=>{
-        console.log("shareeee")
        this.reload()
       })
     },
@@ -135,8 +133,6 @@ export default {
       })
     },
     fuseSearch(options, search){
-      console.log("options",option)
-      console.log("search",search)
       return options
     },
     reload(){
