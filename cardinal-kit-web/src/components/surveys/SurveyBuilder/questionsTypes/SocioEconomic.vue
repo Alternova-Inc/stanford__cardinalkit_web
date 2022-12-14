@@ -35,7 +35,6 @@ export default {
       return "TextInput"
     },
     checkQuestion(){
-      console.log("check")
       let error = false
       let msg = ""
       this.errors={}

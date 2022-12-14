@@ -95,7 +95,6 @@ export function SignUp({ commit }, payload) {
 
 export function SingUpNoPassword({ commit }, payload) {
   const { v4: uuidv4 } = require("uuid");
-  console.log("payload", payload);
   return new Promise(function(resolve, reject) {
     secondaryProvider
       .createUserWithEmailAndPassword(payload.email, uuidv4())
@@ -111,7 +110,6 @@ export function SingUpNoPassword({ commit }, payload) {
               resolve();
           })
           .catch((error) => {
-            console.log("error in reset", error);
             reject(error.message)
           });
       })
@@ -123,7 +121,6 @@ export function SingUpNoPassword({ commit }, payload) {
 
 export function Logout({ commit }, payload) {
   auth.signOut().then(() => {
-    console.log("Logout");
     commit("isLogged", false);
   });
 }

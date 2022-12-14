@@ -93,7 +93,6 @@ export const FetchUserSurveyData = async ({ commit }, { studyId, userId }) => {
         let surveyQuestions = await request.GET(surveysPaths.questionsList(studyId,id)).Execute()
         let questions = []
         surveyQuestions.docs.map((question)=>{
-       //   console.log(question.data().type)
           if(!questionsExclude.includes(question.data().type)){
             questions.push(question.data())
           }
@@ -107,10 +106,6 @@ export const FetchUserSurveyData = async ({ commit }, { studyId, userId }) => {
         }
       }
     }))
-  // userSurveysSnap.forEach((survey) => {
-  //   answers[survey.id] = survey.data();
-  // });
-  console.log("save")
   commit("saveUserAnswers", {studyId,userId, response});
 };
 
@@ -187,7 +182,6 @@ export const CreateStudySchedule = async ({ commit }, { studyId, payload }) => {
       surveysTaskId = task.id;
       if (task.data().scheduleElements) {
         scheduleElements = task.data().scheduleElements;
-       // console.log("schedule", scheduleElements);
       }
     }
   });
@@ -232,7 +226,6 @@ export const CreateUserSchedule = async (
       surveysTaskId = task.id;
       if (task.data().scheduleElements) {
         scheduleElements = task.data().scheduleElements;
-       // console.log("schedule", scheduleElements);
       }
     }
   });

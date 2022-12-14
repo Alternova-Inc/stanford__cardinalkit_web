@@ -395,7 +395,6 @@ export default {
     reviewQuestionData(){
       this.errors={}
       if(this.$refs["question"]){
-        console.log("checking")
         let error,msg;
         ({error,msg} = this.$refs["question"].checkQuestion())
         this.error =  error

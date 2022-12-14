@@ -4,7 +4,6 @@ import { auth } from "@/plugins/firebase/firebase"
 
 export const FetchUserHaveMyData = async ({ commit }) => {
     auth.onAuthStateChanged(async function (user){
-        console.log(user.uid)
         let users = []
         const usersSnap = await request.GET(usersRolesPaths.list()).WHERE(["users_access", "array-contains", user.uid]).Execute()
         usersSnap.forEach(user => {
@@ -13,7 +12,6 @@ export const FetchUserHaveMyData = async ({ commit }) => {
                 ...user.data()
             })
         });
-        console.log("users",users)
         commit("saveUsersHaveMyData",users)
     })
     
@@ -67,7 +65,6 @@ export const ShareMyData = async ({commit},{userId,studyId})=>{
         auth.onAuthStateChanged(async function (user){
             const usersSnap = await request.GET(usersRolesPaths.get(userId)).Execute()
             const userDataSnap = await request.GET(usersPaths.get(studyId,user.uid)).Execute()
-            console.log(userDataSnap.data())
             let email = userDataSnap.data()['email']
             let previousUserAccess = []
             let data= usersSnap.data()
@@ -85,7 +82,6 @@ export const ShareMyData = async ({commit},{userId,studyId})=>{
                'email':email,
                'studyId':studyId
            }
-           console.log('data',previousUserData)
             await request.PUT(usersRolesPaths.get(userId),{
                 data:{
                     'users_access':previousUserAccess,

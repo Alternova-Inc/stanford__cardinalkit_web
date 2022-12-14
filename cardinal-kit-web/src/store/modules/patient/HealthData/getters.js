@@ -190,11 +190,8 @@ export function getSpecificHealthDataGrapFormat(state) {
 
       if(data && data.length){
         data.forEach((record) => {
-          console.log("extra",record.Extrada)
           if(record.Extrada){
             for (const [key, value] of Object.entries(record.Extrada)) {
-              console.log("key",key,"value",value.Value)
-              
               if(types[key]){
                 let previousData = types[key]                
                 previousData.push({x:record.Date.Date, y:value.value})
@@ -208,14 +205,9 @@ export function getSpecificHealthDataGrapFormat(state) {
         for (const [key, value] of Object.entries(types)) {
           dataFormat.push({name:key,data:value})
         }
-        console.log(dataFormat)
         return dataFormat
 
       }
-      
-
-
-
       return [
         {
           name: code,
@@ -227,7 +219,6 @@ export function getSpecificHealthDataGrapFormat(state) {
       
       if(data && data.length){
         data.forEach((record) => {
-          console.log("code",code)
           let yValue = record.Value;
           if (code.includes("Category")) {
             let array = GetCategoriesByHkType(code);

@@ -118,7 +118,6 @@ export const FecthCategoryWithData = async ({ dispatch, commit }, payload) => {
 export const FetchMetricsData = async ({ commit }, { studyId, userId }) => {
   let result = [];
   let metricSnap = await request.GET(metricsPaths.list(studyId,userId)).Execute();
- /*  console.log(metricSnap.docs) */
   for (const [key, element] of Object.entries(metricSnap.docs)) {
     result.push(element.data());
   }
