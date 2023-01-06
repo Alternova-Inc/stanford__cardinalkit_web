@@ -1,5 +1,6 @@
 <template>
   <section class="statistic">
+  
     <!--   <h1 class="mb-5">Statistics</h1> -->
     <div class="graphic">
       <div class="mb-5">
@@ -12,29 +13,32 @@
         />
         <div class="wrapper-graphs" v-if="dataFiltered">
           <line-chart
-            v-if="GetGraphType === 'line'"
+            v-if="GetGraphType == 'line'"
             ref="chart"
             :key="1"
             :series="getSpecificHealthDataGrapFormat(hkCode)"
           />
           <scatter-chart
-            v-if="GetGraphType === 'scatter'"
+            v-if="GetGraphType == 'scatter'"
             ref="chart"
             :key="2"
             :series="getSpecificHealthDataGrapFormat(hkCode)"
             :labels="GetCategoriesByHkType(hkCode)"
           />
           <range-chart
-            v-if="GetGraphType === 'sleep'"
+            v-if="GetGraphType == 'sleep'"
             ref="chart"
             :key="3"
             :series="getSpecificHealthDataGrapFormat(hkCode)"
-            :yAxisFormat="yAxisFormat"
+            :yAxisFormat="
+              function(value) {
+                return new Date(value).toISOString().substr(11, 8);
+              }"
             :yMax="24 * 3600 - 1"
             :yMin="0"
           />
           <range-chart
-            v-if="GetGraphType === 'heart'"
+            v-if="GetGraphType == 'heart'"
             ref="chart"
             :key="4"
             :series="getSpecificHealthDataGrapFormat(hkCode)"
@@ -49,12 +53,15 @@
               }"
           />
           <range-chart
-            v-if="GetGraphType === 'mindful'"
+            v-if="GetGraphType == 'mindful'"
             ref="chart"
             :key="5"
             :series="getSpecificHealthDataGrapFormat(hkCode)"
             :horizontal="true"
-            :toolTipYFormat="yAxisFormat"
+            :toolTipYFormat="
+              function(value) {
+                return new Date(value).toISOString().substr(11, 8);
+              }"
           />
         </div>
         <div class="mb-1" v-if="getHealthDataGraphResume(hkCode)" >
@@ -85,12 +92,13 @@
 </template>
 
 <script>
+import store from "@/store";
 import multipleRadialBars from "@/components/apexCharts/multipleRadialBars";
 import BarChart from "@/components/apexCharts/BarChart";
 import LineChart from "@/components/apexCharts/LineChart";
 import ScatterChart from "@/components/apexCharts/ScatterChart";
 import RangeChart from "@/components/apexCharts/RangeChart";
-import MultipleRadialBars from "@/components/apexCharts/multipleRadialBars.vue";
+import MultipleRadialBars from "../../../components/apexCharts/multipleRadialBars.vue";
 import { mapActions, mapGetters } from "vuex";
 import {
   transformAppleCode,
@@ -129,14 +137,14 @@ export default {
       "getHealthDataGraphResume",
     ]),
     GetGraphType() {
-      if (this.hkCode === "HKCategoryTypeIdentifierSleepAnalysis") {
+      if (this.hkCode == "HKCategoryTypeIdentifierSleepAnalysis") {
         return "sleep";
-      } else if (this.hkCode === "HKQuantityTypeIdentifierHeartRate") {
+      } else if (this.hkCode == "HKQuantityTypeIdentifierHeartRate") {
         return "heart";
-      } else if (this.hkCode === "HKCategoryTypeIdentifierMindfulSession") {
+      } else if (this.hkCode == "HKCategoryTypeIdentifierMindfulSession") {
         return "mindful";
       }
-      else if (this.hkCode === "HKCategoryTypeIdentifierSexualActivity"){
+      else if (this.hkCode == "HKCategoryTypeIdentifierSexualActivity"){
         return "line"
       }
        else if (this.hkCode.includes("Category")) {
@@ -170,9 +178,6 @@ export default {
     ...mapActions("patient", ["FetchSpecificTypeData"]),
     transformAppleCode,
     GetCategoriesByHkType,
-    yAxisFormat(value){
-      return new Date(value).toISOString().substr(11, 8);
-    },
     handleChangeDate(value) {
       if(this.firstDateChange){
         let allData = this.getSpecificHealthDataGrapFormat(this.hkCode)
@@ -196,7 +201,7 @@ export default {
               userId: this.userId,
               dataType: this.hkCode,
               dates: { startDate: value.startDate, endDate: value.endDate },
-            }).then(() => {
+            }).then(()=>{
                 this.dataFiltered = true
             });
             if (this.$refs.chart) {

@@ -23,10 +23,9 @@
     <loading-icon v-else size="12px" class="width"/>
   </div>
 </template>
-
 <script>
-import loadingIcon from "@/components/loading";
 
+import loadingIcon from "@/components/loading";
 export default {
   name: "ActivityCard",
   components:{
@@ -81,7 +80,6 @@ export default {
   }
 };
 </script>
-
 <style lang="scss" scoped>
 .width {
   width: 13rem;

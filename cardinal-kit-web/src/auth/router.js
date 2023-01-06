@@ -3,9 +3,9 @@ import Login from "./views/common/Login";
 import store from "@/store";
 import SignUp from "./views/common/signUp";
 import StudiesList from "@/views/studies/studiesList";
-import PatientsList from "@/patients/views/patientsList";
-import HealthUser from "@/patients/views/healthKitUser";
-import categoryDetail from "@/patients/views/categoryDetail";
+import PatientsList from "@/views/studies/patientsList";
+import HealthUser from "@/views/patients/healthKit/healthKitUser";
+import categoryDetail from "@/views/patients/healthKit/categoryDetail";
 import registerDoctor from "./views/common/registerDoctor";
 import surveysList from "@/views/surveys/surveysList";
 import surveyDetail from "@/views/surveys/surveysDetail";
@@ -13,8 +13,8 @@ import surveyUser from "@/views/surveys/surveyUser";
 import surveyScheduler from "@/views/surveys/surveyScheduler";
 import surveysBuilder from "@/views/surveys/surveysBuilder";
 import editSurveyBuilder from "@/components/surveys/SurveyBuilder/editSurveyBuilder.vue";
-import categories from '@/patients/components/healthKit/categoryList'
-import healthKitGraphs from '@/patients/views/healthKitGraphs'
+import categories from '@/components/patients/healthKit/categoryList'
+import healthKitGraphs from '@/views/patients/healthKit/healthKitGraphs'
 import shareHome from "@/views/share/shareHome";
 
 const routes = [
@@ -68,7 +68,7 @@ const routes = [
         {
           path: "/healthGraph/:studyId/:userId/:hkCode",
           name: "healthGraph",
-          component: () => import('../patients/views/healthKitGraphs'),
+          component: () => import('../views/patients/healthKit/healthKitGraphs'),
           props: true,
           meta: {
             requiresAuth: true,
