@@ -1,0 +1,31 @@
+﻿documentation/docs/node_modules
+cardinal-kit-web/.env
+documentation/docs/src/.vuepress/dist
+firebase/public
+firebase/hostingDocs
+.DS_Store
+node_modules
+/dist
+.firebase
+
+
+# local env files
+.env
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+cardinal-kit-web/.env
