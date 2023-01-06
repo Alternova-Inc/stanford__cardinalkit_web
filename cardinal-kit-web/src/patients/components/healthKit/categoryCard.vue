@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     handleSubmit() {
-      this.loading=true
+      this.loading = true;
       if (this.data.customAction) {
         this.$router.push({
           name: this.data.customAction,

@@ -34,8 +34,8 @@
 </template>
 <script>
 import category from "./categoryCard";
-import { CategoriesList } from '@/common/static_data'
-import { mapGetters } from 'vuex';
+import { CategoriesList } from "@/common/static_data";
+import { mapGetters } from "vuex";
 import LineChart from "@/components/apexCharts/LineChart";
 import AltDate from "@/components/calendar/AltDate";
 
@@ -50,10 +50,10 @@ export default {
   data(){
     return{
       date: { startDate: new Date(new Date().setDate(-30)) },
-      categories:[],
+      categories: [],
       userId: this.$route.query.userId,
       studyId: this.$route.query.studyId,
-      filteredIndexData: [ {name:"ActivityIndex",data:[]} ]
+      filteredIndexData: [ { name: "ActivityIndex", data: [] } ]
     }
   },
   methods: {
@@ -69,13 +69,10 @@ export default {
              return (element.x > startTimeStamp && element.x < endTimeStamp)
            })
            await new Promise(resolve => setTimeout(resolve, 10));;
-           this.filteredIndexData=[ {name:"ActivityIndex",data:finalData} ]
-
+           this.filteredIndexData=[ { name: "ActivityIndex", data: finalData } ]
         }
-        
       }
       this.$refs.chart.zoomX(value.startDate, value.endDate);
-      
     }
   },
   computed: {
@@ -90,7 +87,7 @@ export default {
       return show
     },
     filteredData(){
-      return [ {name:"ActivityIndex",data:this.filteredIndexData[0].data} ]
+      return [{ name: "ActivityIndex", data: this.filteredIndexData[0].data }]
     }
   },
   created(){

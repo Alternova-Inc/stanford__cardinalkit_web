@@ -13,8 +13,9 @@
 
 <script>
 import breadCrumb from "@/components/breadcrumb.vue"
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 import store from "@/store";
+
 export default {
   name: "StudyDetail",
   components:{
@@ -59,7 +60,7 @@ export default {
       })
     ]).then(() => {
        let path = JSON.parse(localStorage.getItem("path"));
-       if(path == null){
+       if(path === null){
          path = [
           {label: "Health Categories", name: "categories"},
           {label: "Activity", name:"category", param: "categoryId"},
@@ -95,4 +96,3 @@ export default {
   }
 };
 </script>
-

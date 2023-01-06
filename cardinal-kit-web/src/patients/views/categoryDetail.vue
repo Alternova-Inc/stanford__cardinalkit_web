@@ -38,7 +38,7 @@
 </template>
 <script>
 import store from "@/store";
-import activityCard from "@/components/patients/healthKit/activity/activityCard";
+import activityCard from "../components/healthKit/activity/activityCard";
 import multipleRadialBars from "@/components/apexCharts/multipleRadialBars";
 import { ACTIVITIES_PER_USER } from "@/plugins/mock/activities";
 
@@ -66,7 +66,7 @@ export default {
     this.activities = this.getCategoryDataWebFormat(this.categoryId)
   },
   beforeRouteEnter(to, from, next) {
-    if(to.params.categoryId=="survey"){
+    if(to.params.categoryId === "survey"){
     }
     else
     {
