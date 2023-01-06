@@ -1,4 +1,4 @@
-import { initialState } from './index'
+import {initialState} from './index'
 
 export function RESET(state){
     const newState= initialState();

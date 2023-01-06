@@ -68,7 +68,7 @@ import {mapGetters,mapActions} from 'vuex'
 import store from "@/store";
 import altTable from '@/components/tables/altTable';
 import modal from "@/components/modals/modal.vue"
-import Card from "@/auth/components/common/Card";
+import Card from "@/components/auth/Card";
 import altSelect from "@/components/multiSelect/Select";
 
 export default {  
