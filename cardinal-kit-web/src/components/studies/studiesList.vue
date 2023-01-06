@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import SmallCard from '@/components/patients/healthKit/SmallCard';
+import SmallCard from '@/patients/components/healthKit/SmallCard';
 
   export default {
   components: { SmallCard },

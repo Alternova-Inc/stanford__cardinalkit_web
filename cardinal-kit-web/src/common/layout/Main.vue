@@ -16,7 +16,8 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 /* import Header from "@/components/auth/Header"; */
-import Sidebar from "@/components/auth/sidebar/index.vue";
+import Sidebar from "@/auth/components/sidebar/index.vue";
+
 export default {
   components: {
   /*   Header, */
@@ -33,10 +34,10 @@ export default {
       let main = [
         { name: "Studies", route: "/" },
       ];
-      if (this.getUserRol == "superAdmin") {
+      if (this.getUserRol === "superAdmin") {
         main.push({ name: "Register doctors", route: "/register" });
       }
-      if (this.getUserRol == "superAdmin" || this.getUserRol == "doctor")
+      if (this.getUserRol === "superAdmin" || this.getUserRol === "doctor")
        {
         if (this.$route.params.studyId){
           main[0].children = [
