@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import Logo from "@/components/auth/Logo";
+import Logo from "./Logo";
 import { ref } from 'vue';
 
 export default {

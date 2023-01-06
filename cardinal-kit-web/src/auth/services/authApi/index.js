@@ -3,9 +3,6 @@ import * as actions from './actions'
 import * as getters from './getters'
 
 export const initialState = () => ({
-    error: false,
-    errorMessage: "",
-    isLogged: false
 })
 
 export default {

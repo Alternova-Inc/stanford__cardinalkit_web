@@ -36,7 +36,7 @@
 </template>
 <script>
 
-import Card from "@/components/auth/Card";
+import Card from "../../components/common/Card";
 import Multiselect from "@/components/multiSelect/Multiselect";
 import { mapActions, mapGetters } from "vuex";
 import store from "@/store";

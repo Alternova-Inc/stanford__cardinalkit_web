@@ -1,22 +1,21 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Login from "@/views/auth/login";
-import SignUp from "@/views/auth/signUp";
+import Login from "./views/common/Login";
+import store from "@/store";
+import SignUp from "./views/common/signUp";
 import StudiesList from "@/views/studies/studiesList";
 import PatientsList from "@/views/studies/patientsList";
 import HealthUser from "@/views/patients/healthKit/healthKitUser";
 import categoryDetail from "@/views/patients/healthKit/categoryDetail";
-import registerDoctor from "@/views/auth/registerDoctor"
-import surveysList from "@/views/surveys/surveysList"
-import surveyDetail from "@/views/surveys/surveysDetail"
-import surveyUser from "@/views/surveys/surveyUser"
-import surveyScheduler from '@/views/surveys/surveyScheduler'
-import store from "@/store";
-import surveysBuilder from "@/views/surveys/surveysBuilder"
-import editSurveyBuilder from "@/components/surveys/SurveyBuilder/editSurveyBuilder.vue"
+import registerDoctor from "./views/common/registerDoctor";
+import surveysList from "@/views/surveys/surveysList";
+import surveyDetail from "@/views/surveys/surveysDetail";
+import surveyUser from "@/views/surveys/surveyUser";
+import surveyScheduler from "@/views/surveys/surveyScheduler";
+import surveysBuilder from "@/views/surveys/surveysBuilder";
+import editSurveyBuilder from "@/components/surveys/SurveyBuilder/editSurveyBuilder.vue";
 import categories from '@/components/patients/healthKit/categoryList'
 import healthKitGraphs from '@/views/patients/healthKit/healthKitGraphs'
-import shareHome from '@/views/share/shareHome'
-
+import shareHome from "@/views/share/shareHome";
 
 const routes = [
   {
@@ -69,7 +68,7 @@ const routes = [
       {
         path: "/healthGraph/:studyId/:userId/:hkCode",
         name: "healthGraph",
-        component: () => import('@/views/patients/healthKit/healthKitGraphs'),
+        component: () => import('../patients/views/healthKitGraphs'),
         props: true,
         meta: {
           requiresAuth: true,
@@ -189,12 +188,12 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   store.dispatch("user/FetchUserRolesAndStudies")
-  if (process.env.VUE_APP_AUTH_MODE == "firebase") {
+  if (process.env.VUE_APP_AUTH_MODE === "firebase") {
     let { auth } = require("@/plugins/firebase/firebase");
     let unsubscribe = auth.onAuthStateChanged(function(user){
         if (user) {
-          if(to.name=="Login"){
-            next({name:'Home'})
+          if(to.name === "Login"){
+            next({ name: 'Home' })
           }
           else{
             next()
@@ -203,7 +202,7 @@ router.beforeEach((to, from, next) => {
           
           
           if (to.matched.some((record) => record.meta.requiresAuth && to.name!="Login")) {
-            next({name:'Login'})
+            next({ name: 'Login' })
           }
           else{
             next()
@@ -215,6 +214,5 @@ router.beforeEach((to, from, next) => {
 
   }
 });
-
 
 export default router;

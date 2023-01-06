@@ -14,9 +14,6 @@ export default {
 </script>
 
 <style lang="scss">
-/* img {
-  width: 20px;
-} */
 i.icon {
   width: 20px;
 
