@@ -49,7 +49,7 @@
 <script>
 import Logo from "../common/Logo";
 import Icon from "./Icon";
-import { ref } from "vue";
+import { ref } from 'vue';
 
 export default {
   props: {

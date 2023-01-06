@@ -34,10 +34,10 @@ export default {
       let main = [
         { name: "Studies", route: "/" },
       ];
-      if (this.getUserRol === "superAdmin") {
+      if (this.getUserRol == "superAdmin") {
         main.push({ name: "Register doctors", route: "/register" });
       }
-      if (this.getUserRol === "superAdmin" || this.getUserRol === "doctor")
+      if (this.getUserRol == "superAdmin" || this.getUserRol == "doctor")
        {
         if (this.$route.params.studyId){
           main[0].children = [

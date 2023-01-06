@@ -67,9 +67,9 @@
   </section>
 </template>
 <script>
-import Logo from "../../components/common/Logo";
-import Card from "../../components/common/Card";
-import { mapActions } from "vuex"
+import Logo from '../../components/common/Logo';
+import Card from '../../components/common/Card';
+import { mapActions } from 'vuex'
 
 export default({
   data(){
