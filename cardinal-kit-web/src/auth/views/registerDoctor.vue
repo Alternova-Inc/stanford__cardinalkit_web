@@ -40,6 +40,7 @@ import Card from "../atoms/Card";
 import Multiselect from "@/components/multiSelect/Multiselect";
 import { mapActions, mapGetters } from "vuex";
 import store from "@/store";
+import { SignUpNoPassword } from "../services/auth"
 
 export default {
   data() {
@@ -54,23 +55,21 @@ export default {
   },
   methods: {
     ...mapActions("auth", ["SingUpNoPassword"]),
-    handleSubmitRegister() {
-      this.SingUpNoPassword({
-        email: email.value,
-        studies: this.studies,
-      }).then(() => {
+    async handleSubmitRegister() {
+      try {
+        await SignUpNoPassword(this.email, this.studies)
         this.studies=[]
         this.email=""
         this.$notify({
           title: "Success",
           text: "The user was successfully registered",
         });
-      }).catch((error)=>{
+      } catch (error) {
         this.$notify({
           title: "Error",
           text: error,
         });
-      });
+      }
     },
   },
   computed: {

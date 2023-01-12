@@ -2,7 +2,9 @@ import {
     auth,
     googleAuthProvider,
     appleAuthProvider,
+    secondaryProvider
 } from "@/plugins/firebase/firebase";
+import request from "@/Rest";
 
 async function SignIn({ email, password }) {
     try {
@@ -33,6 +35,17 @@ async function LogInWithAppleId() {
     }
 }
 
+async function SignUpNoPassword(email, studies) {
+    const { v4: uuidv4 } = require("uuid");
+    try {
+        const { user } = await secondaryProvider.createUserWithEmailAndPassword(email, uuidv4());
+        await secondaryProvider.sendPasswordResetEmail(email);
+        request.POST(`users_roles/${user.uid}`, { data: { rol: "doctor", studies: studies } })
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
 async function Logout() {
     try {
         await auth.signOut();
@@ -43,6 +56,7 @@ async function Logout() {
 
 export {
     SignIn,
+    SignUpNoPassword,
     Logout,
     LogInWithGoogle,
     LogInWithAppleId
