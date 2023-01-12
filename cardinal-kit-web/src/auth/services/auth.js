@@ -7,9 +7,6 @@ import {
 async function SignIn({ email, password }) {
     try {
         await auth.signInWithEmailAndPassword(email, password);
-        return {
-            isLogged: "true"
-        }
     } catch (error) {
         if (error.code === "auth/network-request-failed") {
             throw new Error("No internet connection");
@@ -23,9 +20,6 @@ async function SignIn({ email, password }) {
 async function LogInWithGoogle() {
     try {
         await auth.signInWithPopup(googleAuthProvider);
-        return {
-            isLogged: "true"
-        }
     } catch (error) {
         throw new Error(error);
     }
@@ -34,9 +28,6 @@ async function LogInWithGoogle() {
 async function LogInWithAppleId() {
     try {
         await auth.signInWithPopup(appleAuthProvider);
-        return {
-            isLogged: "true"
-        }
     } catch (error) {
         throw new Error(error);
     }
@@ -45,9 +36,6 @@ async function LogInWithAppleId() {
 async function Logout() {
     try {
         await auth.signOut();
-        return {
-            isLogged: "false"
-        }
     } catch (error) {
         throw new Error(error)
     }
