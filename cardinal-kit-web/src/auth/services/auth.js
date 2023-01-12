@@ -2,7 +2,6 @@ import {
     auth,
     googleAuthProvider,
     appleAuthProvider,
-    secondaryProvider,
 } from "@/plugins/firebase/firebase";
 
 async function SignIn({ email, password }) {
@@ -54,32 +53,8 @@ async function Logout() {
     }
 }
 
-async function SignUp(email, password) {
-    try {
-        await auth.createUserWithEmailAndPassword(email, password);
-        return {
-            // ...
-        }
-    } catch (error) {
-        throw new Error(error)
-    }
-}
-
-async function SingUpNoPassword(payload) {
-    const { v4: uuidv4 } = require("uuid");
-    try {
-        secondaryProvider.createUserWithEmailAndPassword(payload.email, uuidv4());
-        secondaryProvider.sendPasswordResetEmail(payload.email);
-        request.POST(`users_roles/${user.uid}`, { data: { rol: "doctor", studies: payload.studies } })
-    } catch (error) {
-        throw new Error(error)
-    }
-}
-
 export {
     SignIn,
-    SignUp,
-    SingUpNoPassword,
     Logout,
     LogInWithGoogle,
     LogInWithAppleId

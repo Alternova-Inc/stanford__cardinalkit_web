@@ -20,10 +20,6 @@
               icon="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/240px-Apple_logo_black.svg.png"
               text="Sign in with apple" className="btn btn-ck otl-danger" />
           </div>
-          <!-- <div class="text-center">
-              <span class="ft-10">Not a member? </span>
-              <router-link class="ev-link" to="/signup">Sign up</router-link>
-            </div> -->
         </template>
       </Card>
     </section>

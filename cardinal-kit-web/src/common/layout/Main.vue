@@ -15,13 +15,11 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-/* import Header from "@/components/auth/Header"; */
 import Sidebar from "@/auth/organisms/Sidebar";
 import { Logout } from "@/auth/services/auth"
 
 export default {
   components: {
-  /*   Header, */
     Sidebar
   },
   data: function() {
