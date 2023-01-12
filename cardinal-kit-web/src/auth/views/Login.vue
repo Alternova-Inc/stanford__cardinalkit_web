@@ -29,7 +29,6 @@
   import Card from "../atoms/Card";
   import SocialButton from '../atoms/SocialButton';
   import LoginForm from "../organisms/LoginForm.vue";
-  import { mapActions, mapMutations } from "vuex";
   import { LogInWithGoogle, LogInWithAppleId } from "../services/auth"
   
   export default {
@@ -47,13 +46,9 @@
       LoginForm
     },
     methods: {
-      ...mapActions("auth", ["LogInWithGoogle", "LogInWithAppleId"]),
-      ...mapMutations("auth", ["isLogged"]),
-
       async handleGoogleLogin() {
         try {
-          const { isLogged } = await LogInWithGoogle()
-          this.isLogged(isLogged)
+          await LogInWithGoogle();
           this.$router.push({ name: "Home" })
         } catch (error) {
           console.error(error)
@@ -61,8 +56,7 @@
       },
       async handleAppleLogin() {
         try {
-          const { isLogged } = await LogInWithAppleId()
-          this.isLogged(isLogged)
+          await LogInWithAppleId();
           this.$router.push({ name: "Home" })
         } catch (error) {
           console.error(error)

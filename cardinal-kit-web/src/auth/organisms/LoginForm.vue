@@ -19,7 +19,6 @@
   </template>
   
   <script>
-  import { mapMutations, mapGetters } from "vuex";
   import { SignIn } from "../services/auth"
   
   export default {
@@ -30,15 +29,10 @@
         errorMessage: "",
       };
     },
-    computed: {
-      ...mapGetters("auth", ["getError"])
-    },
     methods: {
-      ...mapMutations("auth", ["isLogged"]),
       async handleSubmitLogin() {
         try {
-          const { isLogged } = await SignIn({ email: this.email, password: this.password });
-          this.isLogged(isLogged);
+          await SignIn({ email: this.email, password: this.password });
           this.$router.push({ name: "Home" });
         } catch (error) {
           this.errorMessage = error.message;

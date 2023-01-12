@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters } from "vuex";
 import Sidebar from "@/auth/organisms/Sidebar";
 import { Logout } from "@/auth/services/auth"
 
@@ -76,11 +76,9 @@ export default {
     }
   },
   methods: {
-    ...mapMutations("auth", ["isLogged"]),
     async handleLogout() {
       try {
-        const { isLogged } = await Logout();
-        this.isLogged(isLogged);
+        await Logout();
         this.$router.push("Login");
       } catch (error) {
         console.error(error);
