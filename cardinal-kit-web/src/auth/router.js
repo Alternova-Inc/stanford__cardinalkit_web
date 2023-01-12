@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Login from "./views/Login";
+import Login from "@/auth/views/Login";
 import store from "@/store";
 import StudiesList from "@/views/studies/studiesList";
 import PatientsList from "@/views/studies/patientsList";
 import HealthUser from "@/views/patients/healthKit/healthKitUser";
 import categoryDetail from "@/views/patients/healthKit/categoryDetail";
-import registerDoctor from "./views/registerDoctor";
+import registerDoctor from "@/auth/views/registerDoctor";
 import surveysList from "@/views/surveys/surveysList";
 import surveyDetail from "@/views/surveys/surveysDetail";
 import surveyUser from "@/views/surveys/surveyUser";
@@ -192,8 +192,6 @@ const routes = [
           }
           unsubscribe()
       });
-    } else {
-  
     }
   });
   

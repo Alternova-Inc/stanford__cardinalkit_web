@@ -81,7 +81,10 @@ export default {
         await Logout();
         this.$router.push("Login");
       } catch (error) {
-        console.error(error);
+        this.$notify({
+          title: "Error",
+          text: error,
+        });
       }
     },
   },
