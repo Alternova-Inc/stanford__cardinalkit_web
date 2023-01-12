@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Login from "./views/common/Login";
+import Login from "./views/Login";
 import store from "@/store";
-import SignUp from "./views/common/signUp";
+import SignUp from "./views/signUp";
 import StudiesList from "@/views/studies/studiesList";
 import PatientsList from "@/views/studies/patientsList";
 import HealthUser from "@/views/patients/healthKit/healthKitUser";
 import categoryDetail from "@/views/patients/healthKit/categoryDetail";
-import registerDoctor from "./views/common/registerDoctor";
+import registerDoctor from "./views/registerDoctor";
 import surveysList from "@/views/surveys/surveysList";
 import surveyDetail from "@/views/surveys/surveysDetail";
 import surveyUser from "@/views/surveys/surveyUser";

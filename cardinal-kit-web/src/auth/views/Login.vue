@@ -29,11 +29,12 @@
     </section>
   </template>
   <script>
-  import Logo from "../../components/common/Logo";
-  import Card from "../../components/common/Card";
-  import LoginForm from "../../components/common/LoginForm.vue";
-  import { mapActions } from "vuex";
-  import SocialButton from '../../components/common/SocialButton';
+  import Logo from "../atoms/Logo";
+  import Card from "../atoms/Card";
+  import SocialButton from '../atoms/SocialButton';
+  import LoginForm from "../organisms/LoginForm.vue";
+  import { mapActions, mapMutations } from "vuex";
+  import { LogInWithGoogle, LogInWithAppleId } from "../services/auth"
   
   export default {
     data() {
@@ -41,7 +42,6 @@
         email: "",
         password: "",
         logo: require('@/assets/LogoCardinalKit@2x.png'),
-        showError: false
       };
     },
     components: {
@@ -52,23 +52,25 @@
     },
     methods: {
       ...mapActions("auth", ["LogInWithGoogle", "LogInWithAppleId"]),
-      handleGoogleLogin() {
-        this.showError = false
-        this.LogInWithGoogle()
-          .then((response) => {
-            if (response.isLogged) {
-              this.$router.push({ name: "Home" });
-            }
-          })
+      ...mapMutations("auth", ["isLogged"]),
+
+      async handleGoogleLogin() {
+        try {
+          const { isLogged } = await LogInWithGoogle()
+          this.isLogged(isLogged)
+          this.$router.push({ name: "Home" })
+        } catch (error) {
+          console.error(error)
+        }
       },
-      handleAppleLogin() {
-        this.LogInWithAppleId()
-          .then((response) => {
-            if (response.isLogged) {
-              this.$router.push({ name: "Home" });
-            }
-          })
-          .catch((error) => console.log('Error from Server', error))
+      async handleAppleLogin() {
+        try {
+          const { isLogged } = await LogInWithAppleId()
+          this.isLogged(isLogged)
+          this.$router.push({ name: "Home" })
+        } catch (error) {
+          console.error(error)
+        }
       }
     },
   };

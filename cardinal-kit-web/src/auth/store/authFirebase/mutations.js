@@ -1,9 +1,8 @@
-import {initialState} from './index'
+import State from "./state"
 
 export function RESET(state){
-    const newState= initialState();
-    Object.keys(newState).forEach(key => {
-        state[key] = newState[key]
+    Object.keys(State).forEach(key => {
+        state[key] = State[key]
     });
 }
 

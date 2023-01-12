@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import Logo from "./Logo";
+import Logo from "../atoms/Logo";
 import { ref } from 'vue';
 
 export default {

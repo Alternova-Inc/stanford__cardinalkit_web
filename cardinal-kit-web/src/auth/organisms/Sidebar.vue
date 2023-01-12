@@ -47,8 +47,8 @@
 </template>
 
 <script>
-import Logo from "../common/Logo";
-import Icon from "./Icon";
+import Logo from "../atoms/Logo";
+import Icon from "../atoms/Icon.vue";
 import { ref } from 'vue';
 
 export default {

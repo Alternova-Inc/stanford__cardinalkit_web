@@ -1,7 +1,7 @@
 <template>
     <form class="login-form" @submit.prevent="handleSubmitLogin">
-      <div v-if="getError.error" className="auth__error">
-        <p class="mb-1 subtitle">{{ getError.errorMessage }}</p>
+      <div v-if="errorMessage" className="auth__error">
+        <p class="mb-1 subtitle">{{ errorMessage }}</p>
       </div>
       <div class="form-group">
         <label for="email">Email Address</label>
@@ -19,28 +19,30 @@
   </template>
   
   <script>
-  import { mapActions, mapGetters } from "vuex";
-  
+  import { mapMutations, mapGetters } from "vuex";
+  import { SignIn } from "../services/auth"
   
   export default {
     data() {
       return {
         email: "",
         password: "",
+        errorMessage: "",
       };
     },
     computed: {
       ...mapGetters("auth", ["getError"])
     },
     methods: {
-      ...mapActions("auth", ["SignIn"]),
-      handleSubmitLogin() {
-        this.SignIn({ email: this.email, password: this.password })
-          .then((response) => {
-            if (response.isLogged) {
-              this.$router.push({ name: "Home" });
-            }
-          })
+      ...mapMutations("auth", ["isLogged"]),
+      async handleSubmitLogin() {
+        try {
+          const { isLogged } = await SignIn({ email: this.email, password: this.password });
+          this.isLogged(isLogged);
+          this.$router.push({ name: "Home" });
+        } catch (error) {
+          this.errorMessage = error.message;
+        }
       },
     }
   };
