@@ -14,12 +14,12 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-/* import Header from "@/components/auth/Header"; */
-import Sidebar from "@/components/auth/sidebar/index.vue";
+import { mapGetters } from "vuex";
+import Sidebar from "@/auth/organisms/Sidebar";
+import { Logout } from "@/auth/services/auth"
+
 export default {
   components: {
-  /*   Header, */
     Sidebar
   },
   data: function() {
@@ -33,10 +33,10 @@ export default {
       let main = [
         { name: "Studies", route: "/" },
       ];
-      if (this.getUserRol == "superAdmin") {
+      if (this.getUserRol === "superAdmin") {
         main.push({ name: "Register doctors", route: "/register" });
       }
-      if (this.getUserRol == "superAdmin" || this.getUserRol == "doctor")
+      if (this.getUserRol === "superAdmin" || this.getUserRol === "doctor")
        {
         if (this.$route.params.studyId){
           main[0].children = [
@@ -76,11 +76,16 @@ export default {
     }
   },
   methods: {
-    ...mapActions("auth", ["Logout"]),
-    handleLogout() {
-      this.Logout().then(() => {
+    async handleLogout() {
+      try {
+        await Logout();
         this.$router.push("Login");
-      });
+      } catch (error) {
+        this.$notify({
+          title: "Error",
+          text: error,
+        });
+      }
     },
   },
 };

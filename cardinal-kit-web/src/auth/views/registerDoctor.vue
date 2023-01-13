@@ -11,22 +11,13 @@
           <div class="form-group__horizontal"></div>
           <div class="w-100 form-group">
             <label for="email" class="text-muted">EMAIL</label>
-            <input
-              class="form-input"
-              type="email"
-              placeholder=""
-              id="email"
-              v-model="email"
-              required
-            />
+            <input class="form-input" type="email" placeholder="" id="email" v-model="email" required />
           </div>
           <div class="w-100 form-group">
             <label for="studies" class="text-muted">STUDY</label>
             <Multiselect :options="getUserStudies" v-model="studies" />
           </div>
-          <button id="b-signup"
-            class="btn btn-ck fill-danger w-50 m-auto"
-            type="submit">
+          <button id="b-signup" class="btn btn-ck fill-danger w-50 m-auto" type="submit">
             Register
           </button>
         </form>
@@ -36,10 +27,11 @@
 </template>
 <script>
 
-import Card from "@/components/auth/Card";
+import Card from "../atoms/Card";
 import Multiselect from "@/components/multiSelect/Multiselect";
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 import store from "@/store";
+import { SignUpNoPassword } from "../services/auth"
 
 export default {
   data() {
@@ -53,24 +45,21 @@ export default {
     Multiselect,
   },
   methods: {
-    ...mapActions("auth", ["SingUpNoPassword"]),
-    handleSubmitRegister() {
-      this.SingUpNoPassword({
-        email: email.value,
-        studies: this.studies,
-      }).then(() => {
-        this.studies=[]
-        this.email=""
+    async handleSubmitRegister() {
+      try {
+        await SignUpNoPassword({ email: this.email, studies: this.studies })
+        this.studies = []
+        this.email = ""
         this.$notify({
           title: "Success",
           text: "The user was successfully registered",
         });
-      }).catch((error)=>{
+      } catch (error) {
         this.$notify({
           title: "Error",
           text: error,
         });
-      });
+      }
     },
   },
   computed: {
@@ -102,6 +91,7 @@ export default {
     span {
       font-size: 10pt;
     }
+
     @media screen and (max-width: 510px) {
       margin-bottom: 1rem;
     }
@@ -139,6 +129,7 @@ export default {
         justify-content: flex-end;
       }
     }
+
     button#b-signup {
       margin-top: 1rem;
     }

@@ -1,22 +1,20 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Login from "@/views/auth/login";
-import SignUp from "@/views/auth/signUp";
+import Login from "@/auth/views/Login";
+import store from "@/store";
 import StudiesList from "@/views/studies/studiesList";
 import PatientsList from "@/views/studies/patientsList";
 import HealthUser from "@/views/patients/healthKit/healthKitUser";
 import categoryDetail from "@/views/patients/healthKit/categoryDetail";
-import registerDoctor from "@/views/auth/registerDoctor"
-import surveysList from "@/views/surveys/surveysList"
-import surveyDetail from "@/views/surveys/surveysDetail"
-import surveyUser from "@/views/surveys/surveyUser"
-import surveyScheduler from '@/views/surveys/surveyScheduler'
-import store from "@/store";
-import surveysBuilder from "@/views/surveys/surveysBuilder"
-import editSurveyBuilder from "@/components/surveys/SurveyBuilder/editSurveyBuilder.vue"
-import categories from '@/components/patients/healthKit/categoryList'
-import healthKitGraphs from '@/views/patients/healthKit/healthKitGraphs'
-import shareHome from '@/views/share/shareHome'
-
+import registerDoctor from "@/auth/views/registerDoctor";
+import surveysList from "@/views/surveys/surveysList";
+import surveyDetail from "@/views/surveys/surveysDetail";
+import surveyUser from "@/views/surveys/surveyUser";
+import surveyScheduler from "@/views/surveys/surveyScheduler";
+import surveysBuilder from "@/views/surveys/surveysBuilder";
+import editSurveyBuilder from "@/components/surveys/SurveyBuilder/editSurveyBuilder.vue";
+import categories from '@/components/patients/healthKit/categoryList';
+import healthKitGraphs from '@/views/patients/healthKit/healthKitGraphs';
+import shareHome from "@/views/share/shareHome";
 
 const routes = [
   {
@@ -53,23 +51,23 @@ const routes = [
           requiresAuth: true,
         },
         props: true,
-        redirect: {name: "categories"},
+        redirect: { name: "categories" },
         children: [
-          { 
+          {
             name: "categories", path: '', component: categories,
           },
-          { 
-            name: "category", path: 'category/:categoryId', component: categoryDetail 
+          {
+            name: "category", path: 'category/:categoryId', component: categoryDetail
           },
-          { 
-            name: "statistic", path: 'statistic/:hkCode', component: healthKitGraphs 
+          {
+            name: "statistic", path: 'statistic/:hkCode', component: healthKitGraphs
           }
         ]
       },
       {
         path: "/healthGraph/:studyId/:userId/:hkCode",
         name: "healthGraph",
-        component: () => import('@/views/patients/healthKit/healthKitGraphs'),
+        component: () => import('../views/patients/healthKit/healthKitGraphs'),
         props: true,
         meta: {
           requiresAuth: true,
@@ -79,7 +77,7 @@ const routes = [
         path: "/categoryDetail/:studyId/:userId/:categoryId",
         name: "categoryDetail",
         component: categoryDetail,
-        props:true,
+        props: true,
         meta: {
           requiresAuth: true,
         },
@@ -88,7 +86,7 @@ const routes = [
         path: "/register",
         name: "register",
         component: registerDoctor,
-        props:true,
+        props: true,
         meta: {
           requiresAuth: true,
         },
@@ -97,7 +95,7 @@ const routes = [
         path: "/surveysList/:studyId",
         name: "surveysList",
         component: surveysList,
-        props:true,
+        props: true,
         meta: {
           requiresAuth: true,
         },
@@ -106,7 +104,7 @@ const routes = [
         path: "/surveyDetail/:studyId/:surveyId",
         name: "surveyDetail",
         component: surveyDetail,
-        props:true,
+        props: true,
         meta: {
           requiresAuth: true,
         }
@@ -115,7 +113,7 @@ const routes = [
         path: "/surveysBuilder/:studyId",
         name: "surveysBuilder",
         component: surveysBuilder,
-        props:true,
+        props: true,
         meta: {
           requiresAuth: true,
         }
@@ -124,7 +122,7 @@ const routes = [
         path: "/surveyScheduler/:studyId",
         name: "surveyScheduler",
         component: surveyScheduler,
-        props:true,
+        props: true,
         meta: {
           requiresAuth: true,
         }
@@ -133,7 +131,7 @@ const routes = [
         path: "/edit/surveyBuilder/:studyId/:surveyId",
         name: "editSurveyBuilder",
         component: editSurveyBuilder,
-        props:true,
+        props: true,
         meta: {
           requiresAuth: true,
         },
@@ -142,43 +140,26 @@ const routes = [
         path: "/surveyUser",
         name: "surveyUser",
         component: surveyUser,
-        props:true,
+        props: true,
         meta: {
           requiresAuth: true,
-        },        
+        },
       },
       {
         path: "/share/:studyId",
         name: "share",
         component: shareHome,
-        props:true,
+        props: true,
         meta: {
           requiresAuth: true,
-        },        
+        },
       },
     ]
-  },
-  {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
   },
   {
     path: "/login",
     name: "Login",
     component: Login,
-  },
-  {
-    path: "/signup",
-    name: "signup",
-    component: SignUp,
-    meta: {
-      requiresAuth: true,
-    },
   },
 ];
 
@@ -189,32 +170,25 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   store.dispatch("user/FetchUserRolesAndStudies")
-  if (process.env.VUE_APP_AUTH_MODE == "firebase") {
+  if (process.env.VUE_APP_AUTH_MODE === "firebase") {
     let { auth } = require("@/plugins/firebase/firebase");
-    let unsubscribe = auth.onAuthStateChanged(function(user){
-        if (user) {
-          if(to.name=="Login"){
-            next({name:'Home'})
-          }
-          else{
-            next()
-          }
-        } else {
-          
-          
-          if (to.matched.some((record) => record.meta.requiresAuth && to.name!="Login")) {
-            next({name:'Login'})
-          }
-          else{
-            next()
-          }
+    let unsubscribe = auth.onAuthStateChanged(function (user) {
+      if (user) {
+        if (to.name === "Login") {
+          next({ name: 'Home' })
         }
-        unsubscribe()
+        else {
+          next()
+        }
+      } else if (to.matched.some((record) => record.meta.requiresAuth && to.name !== "Login")) {
+        next({ name: 'Login' })
+      }
+      else {
+        next()
+      }
+      unsubscribe()
     });
-  } else {
-
   }
 });
-
 
 export default router;
