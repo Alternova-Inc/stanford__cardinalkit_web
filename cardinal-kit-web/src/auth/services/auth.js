@@ -35,7 +35,7 @@ async function LogInWithAppleId() {
     }
 }
 
-async function SignUpNoPassword(email, studies) {
+async function SignUpNoPassword({ email, studies }) {
     const { v4: uuidv4 } = require("uuid");
     try {
         const { user } = await secondaryProvider.createUserWithEmailAndPassword(email, uuidv4());
