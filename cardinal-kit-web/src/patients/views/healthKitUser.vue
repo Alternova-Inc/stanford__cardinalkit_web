@@ -13,7 +13,7 @@
 
 <script>
 import breadCrumb from "@/components/breadcrumb.vue"
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 import store from "@/store";
 export default {
   name: "StudyDetail",

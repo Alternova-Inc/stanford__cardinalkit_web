@@ -1,26 +1,6 @@
 <template>
   <section class="page">
-    <!-- <h1 class="mb-5 text-capitalize"> {{categoryId}}</h1> -->
     <div class="row">
-       <!-- <activity-card name="Actividad" date="7 may">
-        <template v-slot:card-body>
-          <div class="card-info">
-            <div class="card-info__group">
-              <p class="subtitle">move</p>
-              <p>{{calories}} kcal</p>
-            </div>
-            <div class="card-info__group">
-              <p class="subtitle">exercise</p>
-              <p>{{exerciseTime}} min</p>
-            </div>
-            <div class="card-info__group">
-              <p class="subtitle">Stand Up</p>
-              <p>{{standUpTime}} h</p>
-            </div>
-          </div>
-           <multiple-radial-bars :series="[calories,exerciseTime,standUpTime]" :height="'250'" :labels="['Move','exercise','Stand Up']"/> 
-        </template>
-      </activity-card> -->
         <div class="col flex wrap" v-if="activities && activities.length" >
           <activity-card 
             v-for="activity in activities" :key="activity.HkCode"
@@ -38,9 +18,8 @@
 </template>
 <script>
 import store from "@/store";
-import activityCard from "@/components/patients/healthKit/activity/activityCard";
+import activityCard from "@/patients/atoms/activityCard";
 import multipleRadialBars from "@/components/apexCharts/multipleRadialBars";
-import { ACTIVITIES_PER_USER } from "@/plugins/mock/activities";
 
 import { mapGetters } from 'vuex';
 export default {
