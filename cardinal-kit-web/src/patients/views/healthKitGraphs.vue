@@ -92,13 +92,12 @@
 </template>
 
 <script>
-import store from "@/store";
 import multipleRadialBars from "@/components/apexCharts/multipleRadialBars";
 import BarChart from "@/components/apexCharts/BarChart";
 import LineChart from "@/components/apexCharts/LineChart";
 import ScatterChart from "@/components/apexCharts/ScatterChart";
 import RangeChart from "@/components/apexCharts/RangeChart";
-import MultipleRadialBars from "../../../components/apexCharts/multipleRadialBars.vue";
+import MultipleRadialBars from "@/components/apexCharts/multipleRadialBars.vue";
 import { mapActions, mapGetters } from "vuex";
 import {
   transformAppleCode,
@@ -194,7 +193,6 @@ export default {
       this.firstDateChange = false
 
       if (value) {
-        // if (this.$refs.chart) {
           if (value.endDate) {
             this.FetchSpecificTypeData({
               studyId: this.studyId,

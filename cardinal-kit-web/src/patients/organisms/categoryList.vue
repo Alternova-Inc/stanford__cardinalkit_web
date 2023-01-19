@@ -33,7 +33,7 @@
   </div>
 </template>
 <script>
-import category from "./categoryCard";
+import category from "@/patients/atoms/categoryCard";
 import { CategoriesList } from '@/common/static_data'
 import { mapGetters } from 'vuex';
 import LineChart from "@/components/apexCharts/LineChart";

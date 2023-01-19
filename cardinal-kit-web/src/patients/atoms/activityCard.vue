@@ -7,7 +7,6 @@
         </div>
         <div  class="card-header__link  text-center m-1">
           <img v-if="logo" :src="logo" width="50" alt="logo activity card">
-          <!-- <span class="arrow-link">›</span> -->
         </div>
       </div>
       <div class="card-body m-1">
@@ -95,7 +94,6 @@ export default {
   justify-content: space-between;
 
   .card-header {
-    //display: flex;
     justify-content: space-between;
     padding: .7rem;
 

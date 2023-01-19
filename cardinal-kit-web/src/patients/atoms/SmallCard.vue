@@ -8,7 +8,6 @@
         <small class="small-card-info__link pointer">{{ actionText || Action }}</small>
       </div>
 		</div  >
-	<!-- 	<div class="hidden-background"></div> -->
 	</div>
 </template>
 
@@ -97,25 +96,5 @@ export default {
       }
     }
   }
-/*   .hidden-background {
-    width: 100%;
-    border-radius: 10px;
-    position: absolute;
-    background-color: var(--bg-card-hover);
-    top: 0;
-    left: 0;
-    height: 10%;
-    visibility: hidden;
-    transition: all .7s;
-  }
-
-    .hidden-background {
-      visibility: visible;
-      border-radius: 10px;
-      box-shadow: -1px 3px 5px 2px var(--bg-card);
-      height: 100%;
-      z-index: 0;
-     }
-  }*/
 }
 </style>

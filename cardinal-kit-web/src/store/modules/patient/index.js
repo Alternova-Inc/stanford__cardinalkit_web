@@ -11,12 +11,7 @@ export const FetchCategoryTypeData = async (
   return await FetchGeneralData({...payload,filterParams})
 };
 
-//TODO how is sample data export
-export const FetchSampleData = async(
-
-)=>{
-
-};
+export const FetchSampleData = async () => {};
 
 export const FetchLastQuantityData = async(
   quantity_type,

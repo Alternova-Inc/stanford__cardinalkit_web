@@ -8,7 +8,7 @@
 <script>
 import { mapGetters } from "vuex";
 import store from "@/store";
-import patientList from "@/components/studies/patientsList";
+import patientList from "@/patients/organisms/patientsList";
 
 export default {
   name: "Home",
