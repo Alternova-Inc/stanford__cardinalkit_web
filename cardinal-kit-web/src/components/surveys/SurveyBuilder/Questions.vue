@@ -410,7 +410,7 @@ export default {
 
         }
 
-        if(this.question.type != "form" && this.question.question == ""){
+        if(this.question.type != "form" && this.question.type != "instruction" && this.question.question == ""){
           this.error = true
           this.msg = "The fields can't be blank"
           this.errors["question"] = true
