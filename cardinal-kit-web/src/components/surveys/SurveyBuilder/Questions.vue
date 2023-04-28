@@ -186,12 +186,12 @@
         <TextScale :Survey="question"  ref="question"/>
       </div>
 
-      <div v-if="question.type === 'timeinterval'" class="form-group col-md-6">
+      <div v-if="question.type === 'timeInterval'" class="form-group col-md-6">
         <br />
         <TimeInterval ref="question"/>
       </div>
 
-      <div v-if="question.type === 'timeofday'" class="form-group col-md-6">
+      <div v-if="question.type === 'timeOfDay'" class="form-group col-md-6">
         <br />
         <TimeOfDay ref="question"/>
       </div>
