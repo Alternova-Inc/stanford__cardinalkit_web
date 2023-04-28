@@ -16,10 +16,12 @@
 
 <script>
 export default {
-  checkQuestion(){
-      let error = false
-      let msg = ""
-      return {"error":error,"msg":msg};
+  methods:{
+    checkQuestion(){
+        let error = false
+        let msg = ""
+        return {"error":error,"msg":msg};
+      }
     }
 }
 </script>
